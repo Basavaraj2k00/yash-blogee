@@ -15,7 +15,10 @@ load_dotenv()
 import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
+# app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
+app.config['SECRET_KEY'] = "8BYkEfBA6O6donzWlSihBXox7C0sKR6b"
+
+
 ckeditor = CKEditor(app)
 Bootstrap(app)
 gravatar = Gravatar(app, size=100, rating='g', default='retro',
@@ -171,35 +174,35 @@ def about():
     return render_template("about.html")
 
 # email_message = f'\n\nName: {data["name"]}\nEmail: {data["email"]}\nPhone: {data["phone"]}\nMessage:{data["message"]}'
-
+   
 
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     if request.method == "POST":
         data = request.form
-        print(data["email"])
-        try:
-            my_email = os.environ.get("MY_EMAIL")
-            my_password = os.environ.get("MY_PASSWORD")
-
         
-            with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
-                connection.starttls()
-                connection.login(user=my_email, password=my_password)
+    
+        my_email = os.environ.get("MY_EMAIL")
+        my_password = os.environ.get("MY_PASSWORD")
+ 
+    
+        with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
+            connection.starttls()
+            connection.login(user=my_email, password=my_password)
 
-                to_email = "yashuyash286@gmail.com"
-                subject = f"Contact from Blogee"
+            to_email = "yashuyash286@gmail.com"
+            subject = f"Contact from Blogee"
 
-                email_message = f'\n\nName: {data["name"]}\nEmail: {data["email"]}\nPhone: {data["phone"]}\nMessage:{data["message"]}'
+            email_message = f'\n\nName: {data["name"]}\nEmail: {data["email"]}\nPhone: {data["phone"]}\nMessage:{data["message"]}'
 
-                connection.sendmail(from_addr=my_email, to_addrs=to_email,
-                                    msg=f"Subject:{subject}\n\n{email_message}")
-                return render_template("contact.html", msg_sent=True)
-        except socket.error as e:
-            return f"<center><h1>{e}"
+            connection.sendmail(from_addr=my_email, to_addrs=to_email,
+                                msg=f"Subject:{subject}\n\n{email_message}")
+            return render_template("contact.html", msg_sent=True)
+        # except socket.error as e:
+        #     return f"<center><h1>{e}"
     return render_template("contact.html", msg_sent=False)
 
-
+ 
 @app.route("/new-post", methods=["GET", "POST"])
 # Mark with decorator
 @admin_only
@@ -253,13 +256,14 @@ def delete_post(post_id):
     return redirect(url_for('get_all_posts'))
 
 
-@app.route("/delete/<int:post_id>")
-def delete_comment(post_id):
-    comment_to_delete = Comment.query.filter_by(id=post_id)
-    db.session.delete(comment_to_delete)
-    db.session.commit()
-    return redirect(url_for('get_all_posts'))
+# @app.route("/delete/<int:post_id>")
+# def delete_comment(post_id):
+#     comment_to_delete = Comment.query.filter_by(id=post_id)
+#     db.session.delete(comment_to_delete)
+#     db.session.commit()
+#     return redirect(url_for('get_all_posts'))
 
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
+    # app.run(debug=True)
