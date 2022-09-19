@@ -182,8 +182,8 @@ def contact():
         data = request.form
         
     
-        my_email = os.environ.get("MY_EMAIL")
-        my_password = os.environ.get("MY_PASSWORD")
+        my_email = yr2327@gmail.com
+        my_password = hguefaxcewevhluz
  
     
         with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
